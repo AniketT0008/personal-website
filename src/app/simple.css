@@ -127,3 +127,9 @@ body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-s
 .simple-art-caption { color: #53635b; font-size: .68rem; }
 .simple-art-generic-mark { height: 4rem; border: 1px solid #b9c5bf; border-radius: 6px; background: repeating-linear-gradient(90deg, transparent 0 18px, rgba(169,95,32,.12) 18px 19px); }
 .simple-card-art strong { color: #1c2924; font-size: 1rem; }
+
+
+.simple-card-media { display: grid; width: auto; aspect-ratio: 16 / 9; grid-template-columns: 1fr; align-items: stretch; }
+.simple-card-media-pair { grid-template-columns: 1fr 1fr; }
+.simple-card-photo { min-width: 0; height: 100%; aspect-ratio: auto; }
+.simple-card-photo img { object-fit: cover; }
