@@ -1,15 +1,11 @@
-"use client";
-
-import { BootProvider } from "@/components/boot/BootContext";
-import { BootLoader } from "@/components/boot/BootLoader";
+import type { ReactNode } from "react";
 import { SiteNav } from "@/components/SiteNav";
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({ children }: { children: ReactNode }) {
   return (
-    <BootProvider>
-      <BootLoader />
+    <>
       <SiteNav />
-      <main className="page-shell">{children}</main>
-    </BootProvider>
+      <main className="page-shell simple-main">{children}</main>
+    </>
   );
 }
