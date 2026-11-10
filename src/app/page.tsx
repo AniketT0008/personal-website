@@ -19,10 +19,22 @@ const hackathonProjects = projects.filter((project) => project.category === "Hac
 const teamEntries = work.filter((entry) => entry.employmentType === "Design Team");
 
 function ProjectCard({ project, label }: { project: (typeof projects)[number]; label: string }) {
+  const gallery = project.gallery ?? [];
+  const cardImages = project.thumbnail
+    ? gallery.slice(0, 1)
+    : gallery.slice(0, 2);
+
   return (
     <article className="simple-card">
-      {(project.thumbnail || (project.gallery && project.gallery.length > 0)) && (
-        <div className={"simple-card-media" + (project.gallery && project.gallery.length > 0 ? " simple-card-media-pair" : "")}>
+      {project.videoUrl ? (
+        <div className="simple-card-video">
+          <video controls preload="none" playsInline poster={project.videoPoster}>
+            <source src={project.videoUrl} type="video/mp4" />
+            Your browser does not support the video element.
+          </video>
+        </div>
+      ) : (project.thumbnail || cardImages.length > 0) ? (
+        <div className={"simple-card-media" + (project.thumbnail && cardImages.length > 0 ? " simple-card-media-pair" : "")}>
           {project.thumbnail && (
             <div className="simple-card-photo">
               <Image
@@ -34,7 +46,22 @@ function ProjectCard({ project, label }: { project: (typeof projects)[number]; l
               />
             </div>
           )}
-          {project.gallery?.slice(0, 1).map((image) => (
+          {cardImages.map((image) => (
+            <div className="simple-card-photo" key={image.src}>
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                unoptimized={image.src.endsWith(".gif")}
+                sizes="(max-width: 760px) 100vw, 40vw"
+              />
+            </div>
+          ))}
+        </div>
+      ) : null}
+      {project.videoUrl && gallery.length > 0 && (
+        <div className="simple-card-media">
+          {gallery.slice(0, 1).map((image) => (
             <div className="simple-card-photo" key={image.src}>
               <Image src={image.src} alt={image.alt} fill sizes="(max-width: 760px) 100vw, 40vw" />
             </div>
