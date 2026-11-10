@@ -1,146 +1,79 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Mail } from "lucide-react";
+import { ProjectModal } from "@/components/ProjectModal";
 import { siteConfig } from "@/data/site";
 import { work } from "@/data/work";
 import { projects, getTagById } from "@/data/projects";
+import type { Project } from "@/data/projects";
 import { skillCategories, skills } from "@/data/skills";
 
-const hardwareIds = [
-  "gesture-controlled-robot",
-  "competition-robotics",
-  "pid-self-balancing-robot",
-  "bare-metal-avr",
-];
-const hardwareProjects = hardwareIds
-  .map((id) => projects.find((project) => project.id === id))
-  .filter((project) => Boolean(project));
-const hackathonProjects = projects.filter((project) => project.category === "Hackathons");
+const getProjects = (ids: string[]): Project[] =>
+  ids.flatMap((id) => {
+    const project = projects.find((item) => item.id === id);
+    return project ? [project] : [];
+  });
+
+const hardwareProjects = getProjects(["gesture-controlled-robot", "competition-robotics"]);
+const hardwareMentions = getProjects(["pid-self-balancing-robot", "bare-metal-avr"]);
+const hackathonProjects = getProjects(["portfolio-builder", "aurora-ai"]);
+const hackathonMentions = getProjects(["queuemerger", "adaptive-study-engine"]);
+const otherFeaturedProjects = getProjects(["pathfinding-visualizer"]);
 const teamEntries = work.filter((entry) => entry.employmentType === "Design Team");
 
-function ProjectArt({ id, title }: { id: string; title: string }) {
-  const label = "SCHEMATIC / " + title.toUpperCase();
+const plainButtonStyle = {
+  border: 0,
+  padding: 0,
+  background: "transparent",
+  color: "inherit",
+  font: "inherit",
+  cursor: "pointer",
+} as const;
 
-  if (id === "queuemerger") {
-    return (
-      <div className="simple-card-art" role="img" aria-label="Schematic: student questions grouped by shared root cause">
-        <span className="simple-art-label">{label}</span>
-        <svg viewBox="0 0 520 150" aria-hidden="true">
-          <rect className="simple-art-box" x="18" y="22" width="92" height="28" rx="5" />
-          <rect className="simple-art-box" x="18" y="61" width="92" height="28" rx="5" />
-          <rect className="simple-art-box" x="18" y="100" width="92" height="28" rx="5" />
-          <path className="simple-art-line" d="M110 36 H180 V75 H228 M110 75 H228 M110 114 H180 V75" />
-          <circle className="simple-art-node" cx="248" cy="75" r="20" />
-          <path className="simple-art-line" d="M268 75 H345" />
-          <rect className="simple-art-box simple-art-box-strong" x="350" y="53" width="145" height="44" rx="7" />
-          <text className="simple-art-text" x="32" y="41">QUESTION</text>
-          <text className="simple-art-text" x="229" y="79">ROOT</text>
-          <text className="simple-art-text" x="371" y="80">TA RESPONSE</text>
-        </svg>
-        <span className="simple-art-caption">Individual questions → shared blockers</span>
-      </div>
-    );
-  }
-
-  if (id === "adaptive-study-engine") {
-    return (
-      <div className="simple-card-art" role="img" aria-label="Schematic: lesson, recall, and adaptive review cycle">
-        <span className="simple-art-label">{label}</span>
-        <svg viewBox="0 0 520 150" aria-hidden="true">
-          <rect className="simple-art-box" x="22" y="42" width="112" height="58" rx="7" />
-          <rect className="simple-art-box" x="204" y="42" width="112" height="58" rx="7" />
-          <rect className="simple-art-box simple-art-box-strong" x="386" y="42" width="112" height="58" rx="7" />
-          <path className="simple-art-line" d="M134 71 H195 M316 71 H377" />
-          <path className="simple-art-line simple-art-dash" d="M440 108 C400 140, 113 140, 78 108" />
-          <text className="simple-art-text" x="50" y="76">LESSON</text>
-          <text className="simple-art-text" x="233" y="76">RECALL</text>
-          <text className="simple-art-text" x="412" y="76">NEXT REVIEW</text>
-        </svg>
-        <span className="simple-art-caption">Learn → recall → schedule the next review</span>
-      </div>
-    );
-  }
-
-  if (id === "pid-self-balancing-robot") {
-    return (
-      <div className="simple-card-art" role="img" aria-label="Schematic: balance sensor, PID loop, and wheel control">
-        <span className="simple-art-label">{label}</span>
-        <svg viewBox="0 0 520 150" aria-hidden="true">
-          <circle className="simple-art-wheel" cx="174" cy="112" r="21" />
-          <circle className="simple-art-wheel" cx="300" cy="112" r="21" />
-          <path className="simple-art-body" d="M165 95 L190 38 H276 L309 95 Z" />
-          <rect className="simple-art-box-strong" x="208" y="50" width="50" height="25" rx="4" />
-          <path className="simple-art-line" d="M235 49 V22 H382" />
-          <rect className="simple-art-box" x="386" y="9" width="107" height="28" rx="5" />
-          <text className="simple-art-text" x="403" y="28">PITCH → PID</text>
-          <text className="simple-art-text" x="194" y="145">BENCH PROTOTYPE</text>
-        </svg>
-        <span className="simple-art-caption">Estimate pitch → tune control → retest</span>
-      </div>
-    );
-  }
-
-  if (id === "bare-metal-avr") {
-    return (
-      <div className="simple-card-art" role="img" aria-label="Schematic: microcontroller output driving an indicator LED">
-        <span className="simple-art-label">{label}</span>
-        <svg viewBox="0 0 520 150" aria-hidden="true">
-          <rect className="simple-art-box-strong" x="170" y="26" width="164" height="88" rx="10" />
-          <path className="simple-art-line" d="M170 42 H130 M170 62 H130 M170 82 H130 M170 102 H130 M334 70 H390" />
-          <path className="simple-art-line" d="M390 70 H430" />
-          <circle className="simple-art-node" cx="450" cy="70" r="18" />
-          <path className="simple-art-line simple-art-dash" d="M437 56 L463 84 M463 56 L437 84" />
-          <text className="simple-art-text" x="200" y="76">MCU / GPIO</text>
-          <text className="simple-art-text" x="428" y="115">LED</text>
-        </svg>
-        <span className="simple-art-caption">Register write → output pin → built-in LED</span>
-      </div>
-    );
-  }
-
-  return (
-    <div className="simple-card-art simple-card-art-generic" role="img" aria-label={"Project schematic for " + title}>
-      <span className="simple-art-label">{label}</span>
-      <div className="simple-art-generic-mark" aria-hidden="true" />
-      <strong>{title}</strong>
-    </div>
-  );
-}
-
-function ProjectCard({ project, label }: { project: (typeof projects)[number]; label: string }) {
+function ProjectCard({
+  project,
+  label,
+  onOpen,
+}: {
+  project: Project;
+  label: string;
+  onOpen: (project: Project) => void;
+}) {
   const gallery = project.gallery ?? [];
-  const cardImages = project.thumbnail ? gallery.slice(0, 1) : gallery.slice(0, 2);
+  const image = project.thumbnail
+    ? { src: project.thumbnail, alt: project.thumbnailAlt ?? project.title }
+    : gallery[0];
 
   return (
     <article className="simple-card">
       {project.videoUrl ? (
         <div className="simple-card-video">
-          <video controls preload="none" playsInline poster={project.videoPoster}>
+          <video controls preload="none" playsInline poster={project.videoPoster ?? project.thumbnail}>
             <source src={project.videoUrl} type="video/mp4" />
             Your browser does not support the video element.
           </video>
         </div>
-      ) : (project.thumbnail || cardImages.length > 0) ? (
-        <div className={"simple-card-media" + (project.thumbnail && cardImages.length > 0 ? " simple-card-media-pair" : "")}>
-          {project.thumbnail && (
-            <div className="simple-card-photo">
-              <Image src={project.thumbnail} alt={project.thumbnailAlt ?? ""} fill unoptimized={project.thumbnail.endsWith(".gif")} sizes="(max-width: 760px) 100vw, 40vw" />
-            </div>
-          )}
-          {cardImages.map((image) => (
-            <div className="simple-card-photo" key={image.src}>
-              <Image src={image.src} alt={image.alt} fill unoptimized={image.src.endsWith(".gif")} sizes="(max-width: 760px) 100vw, 40vw" />
-            </div>
-          ))}
+      ) : image ? (
+        <div className="simple-card-media">
+          <div className="simple-card-photo">
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              unoptimized={image.src.endsWith(".gif")}
+              sizes="(max-width: 760px) 100vw, 40vw"
+            />
+          </div>
         </div>
-      ) : (
-        <ProjectArt id={project.id} title={project.title} />
-      )}
+      ) : null}
       {project.videoUrl && gallery.length > 0 && (
         <div className="simple-card-media">
-          {gallery.slice(0, 1).map((image) => (
-            <div className="simple-card-photo" key={image.src}>
-              <Image src={image.src} alt={image.alt} fill sizes="(max-width: 760px) 100vw, 40vw" />
+          {gallery.slice(0, 2).map((item) => (
+            <div className="simple-card-photo" key={item.src}>
+              <Image src={item.src} alt={item.alt} fill sizes="(max-width: 760px) 100vw, 40vw" />
             </div>
           ))}
         </div>
@@ -159,17 +92,70 @@ function ProjectCard({ project, label }: { project: (typeof projects)[number]; l
       </div>
       <div className="simple-card-links">
         {project.demoUrl && (
-          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">Demo <ArrowUpRight size={14} aria-hidden /></a>
+          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
+            Demo <ArrowUpRight size={14} aria-hidden />
+          </a>
         )}
         {project.githubUrl && (
-          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">Source <ArrowUpRight size={14} aria-hidden /></a>
+          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+            Source <ArrowUpRight size={14} aria-hidden />
+          </a>
         )}
+        <button
+          className="simple-text-link"
+          type="button"
+          style={{ ...plainButtonStyle, marginTop: 0 }}
+          onClick={() => onOpen(project)}
+        >
+          Details <ArrowUpRight size={14} aria-hidden />
+        </button>
       </div>
     </article>
   );
 }
 
+function ProjectMentions({
+  items,
+  onOpen,
+}: {
+  items: Project[];
+  onOpen: (project: Project) => void;
+}) {
+  if (items.length === 0) return null;
+
+  return (
+    <div className="simple-team-list">
+      {items.map((project) => (
+        <button
+          className="simple-team-row"
+          key={project.id}
+          type="button"
+          style={{
+            ...plainButtonStyle,
+            width: "100%",
+            borderTop: 0,
+            borderRight: 0,
+            borderLeft: 0,
+            textAlign: "left",
+          }}
+          onClick={() => onOpen(project)}
+        >
+          <div>
+            <p className="simple-kicker">{project.category} · {project.year}</p>
+            <h3>{project.title}</h3>
+          </div>
+          <p>
+            {project.summary} <span className="simple-text-link" style={{ marginTop: 0 }}>Open details <ArrowUpRight size={14} aria-hidden /></span>
+          </p>
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function HomePage() {
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
+
   return (
     <div className="simple-home">
       <section className="simple-hero" id="top">
@@ -216,10 +202,12 @@ export default function HomePage() {
           <p>Team work and projects centered on physical robots, embedded code, and sensing.</p>
         </header>
         <div className="simple-card-grid">
-          {hardwareProjects.map((project) => project && (
-            <ProjectCard key={project.id} project={project} label={project.category} />
+          {hardwareProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} label={project.category} onOpen={setActiveProject} />
           ))}
         </div>
+        <p className="simple-kicker" style={{ marginTop: "1.35rem", marginBottom: ".2rem" }}>More hardware projects</p>
+        <ProjectMentions items={hardwareMentions} onOpen={setActiveProject} />
       </section>
 
       <section className="simple-section" id="hackathons">
@@ -230,14 +218,29 @@ export default function HomePage() {
         </header>
         <div className="simple-card-grid">
           {hackathonProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} label="Hackathon project" />
+            <ProjectCard key={project.id} project={project} label="Hackathon project" onOpen={setActiveProject} />
+          ))}
+        </div>
+        <p className="simple-kicker" style={{ marginTop: "1.35rem", marginBottom: ".2rem" }}>More hackathon builds</p>
+        <ProjectMentions items={hackathonMentions} onOpen={setActiveProject} />
+      </section>
+
+      <section className="simple-section" id="other-work">
+        <header className="simple-section-heading">
+          <p className="simple-kicker">03 / Other featured work</p>
+          <h2>Visualizing algorithms.</h2>
+          <p>A compact software project with a visual demo.</p>
+        </header>
+        <div className="simple-card-grid">
+          {otherFeaturedProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} label={project.category} onOpen={setActiveProject} />
           ))}
         </div>
       </section>
 
       <section className="simple-section" id="teams">
         <header className="simple-section-heading">
-          <p className="simple-kicker">03 / Student teams</p>
+          <p className="simple-kicker">04 / Student teams</p>
           <h2>Engineering team work.</h2>
         </header>
         <div className="simple-team-list">
@@ -257,7 +260,7 @@ export default function HomePage() {
 
       <section className="simple-section" id="skills">
         <header className="simple-section-heading">
-          <p className="simple-kicker">04 / Toolkit</p>
+          <p className="simple-kicker">05 / Toolkit</p>
           <h2>Tools I use.</h2>
         </header>
         <div className="simple-skill-grid">
@@ -277,7 +280,7 @@ export default function HomePage() {
 
       <section className="simple-about" id="about">
         <div>
-          <p className="simple-kicker">05 / About</p>
+          <p className="simple-kicker">06 / About</p>
           <h2>Curious about how the whole system works.</h2>
         </div>
         <p>
@@ -290,7 +293,7 @@ export default function HomePage() {
 
       <section className="simple-contact" id="contact">
         <div>
-          <p className="simple-kicker">06 / Contact</p>
+          <p className="simple-kicker">07 / Contact</p>
           <h2>Have a hardware problem to solve?</h2>
           <p>Open to co-ops, design-team work, and collaborations in robotics and embedded systems.</p>
         </div>
@@ -308,6 +311,7 @@ export default function HomePage() {
         <span>© 2026 Aniket Thakur</span>
         <Link href="#top">Back to top ↑</Link>
       </footer>
+      <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
     </div>
   );
 }
