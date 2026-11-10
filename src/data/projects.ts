@@ -126,7 +126,7 @@ export const projects: Project[] = [
     category: "Computer Vision",
     tags: ["python", "mediapipe", "opencv", "esp32", "robotics", "wifi-control"],
     featured: true,
-    thumbnail: "/images/projects/gesture-robot.gif",
+    thumbnail: "/images/projects/gesture-robot.png",
     thumbnailAlt: "Robot controlled by hand gestures",
     problem:
       "The first raw-image classifier confused left and right gestures.",
