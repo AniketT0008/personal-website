@@ -86,7 +86,14 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             </div>
 
             <div className="overflow-y-auto px-5 py-4 space-y-5">
-              {project.thumbnail ? (
+              {project.videoUrl ? (
+                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg bg-bg-muted">
+                  <video className="h-full w-full object-contain" controls preload="none" playsInline poster={project.videoPoster}>
+                    <source src={project.videoUrl} type="video/mp4" />
+                    Your browser does not support the video element.
+                  </video>
+                </div>
+              ) : project.thumbnail ? (
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-lg bg-bg-muted">
                   <Image
                     src={project.thumbnail}
