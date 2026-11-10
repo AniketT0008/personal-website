@@ -18,11 +18,98 @@ const hardwareProjects = hardwareIds
 const hackathonProjects = projects.filter((project) => project.category === "Hackathons");
 const teamEntries = work.filter((entry) => entry.employmentType === "Design Team");
 
+function ProjectArt({ id, title }: { id: string; title: string }) {
+  const label = "SCHEMATIC / " + title.toUpperCase();
+
+  if (id === "queuemerger") {
+    return (
+      <div className="simple-card-art" role="img" aria-label="Schematic: student questions grouped by shared root cause">
+        <span className="simple-art-label">{label}</span>
+        <svg viewBox="0 0 520 150" aria-hidden="true">
+          <rect className="simple-art-box" x="18" y="22" width="92" height="28" rx="5" />
+          <rect className="simple-art-box" x="18" y="61" width="92" height="28" rx="5" />
+          <rect className="simple-art-box" x="18" y="100" width="92" height="28" rx="5" />
+          <path className="simple-art-line" d="M110 36 H180 V75 H228 M110 75 H228 M110 114 H180 V75" />
+          <circle className="simple-art-node" cx="248" cy="75" r="20" />
+          <path className="simple-art-line" d="M268 75 H345" />
+          <rect className="simple-art-box simple-art-box-strong" x="350" y="53" width="145" height="44" rx="7" />
+          <text className="simple-art-text" x="32" y="41">QUESTION</text>
+          <text className="simple-art-text" x="229" y="79">ROOT</text>
+          <text className="simple-art-text" x="371" y="80">TA RESPONSE</text>
+        </svg>
+        <span className="simple-art-caption">Individual questions → shared blockers</span>
+      </div>
+    );
+  }
+
+  if (id === "adaptive-study-engine") {
+    return (
+      <div className="simple-card-art" role="img" aria-label="Schematic: lesson, recall, and adaptive review cycle">
+        <span className="simple-art-label">{label}</span>
+        <svg viewBox="0 0 520 150" aria-hidden="true">
+          <rect className="simple-art-box" x="22" y="42" width="112" height="58" rx="7" />
+          <rect className="simple-art-box" x="204" y="42" width="112" height="58" rx="7" />
+          <rect className="simple-art-box simple-art-box-strong" x="386" y="42" width="112" height="58" rx="7" />
+          <path className="simple-art-line" d="M134 71 H195 M316 71 H377" />
+          <path className="simple-art-line simple-art-dash" d="M440 108 C400 140, 113 140, 78 108" />
+          <text className="simple-art-text" x="50" y="76">LESSON</text>
+          <text className="simple-art-text" x="233" y="76">RECALL</text>
+          <text className="simple-art-text" x="412" y="76">NEXT REVIEW</text>
+        </svg>
+        <span className="simple-art-caption">Learn → recall → schedule the next review</span>
+      </div>
+    );
+  }
+
+  if (id === "pid-self-balancing-robot") {
+    return (
+      <div className="simple-card-art" role="img" aria-label="Schematic: balance sensor, PID loop, and wheel control">
+        <span className="simple-art-label">{label}</span>
+        <svg viewBox="0 0 520 150" aria-hidden="true">
+          <circle className="simple-art-wheel" cx="174" cy="112" r="21" />
+          <circle className="simple-art-wheel" cx="300" cy="112" r="21" />
+          <path className="simple-art-body" d="M165 95 L190 38 H276 L309 95 Z" />
+          <rect className="simple-art-box-strong" x="208" y="50" width="50" height="25" rx="4" />
+          <path className="simple-art-line" d="M235 49 V22 H382" />
+          <rect className="simple-art-box" x="386" y="9" width="107" height="28" rx="5" />
+          <text className="simple-art-text" x="403" y="28">PITCH → PID</text>
+          <text className="simple-art-text" x="194" y="145">BENCH PROTOTYPE</text>
+        </svg>
+        <span className="simple-art-caption">Estimate pitch → tune control → retest</span>
+      </div>
+    );
+  }
+
+  if (id === "bare-metal-avr") {
+    return (
+      <div className="simple-card-art" role="img" aria-label="Schematic: microcontroller output driving an indicator LED">
+        <span className="simple-art-label">{label}</span>
+        <svg viewBox="0 0 520 150" aria-hidden="true">
+          <rect className="simple-art-box-strong" x="170" y="26" width="164" height="88" rx="10" />
+          <path className="simple-art-line" d="M170 42 H130 M170 62 H130 M170 82 H130 M170 102 H130 M334 70 H390" />
+          <path className="simple-art-line" d="M390 70 H430" />
+          <circle className="simple-art-node" cx="450" cy="70" r="18" />
+          <path className="simple-art-line simple-art-dash" d="M437 56 L463 84 M463 56 L437 84" />
+          <text className="simple-art-text" x="200" y="76">MCU / GPIO</text>
+          <text className="simple-art-text" x="428" y="115">LED</text>
+        </svg>
+        <span className="simple-art-caption">Register write → output pin → built-in LED</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="simple-card-art simple-card-art-generic" role="img" aria-label={"Project schematic for " + title}>
+      <span className="simple-art-label">{label}</span>
+      <div className="simple-art-generic-mark" aria-hidden="true" />
+      <strong>{title}</strong>
+    </div>
+  );
+}
+
 function ProjectCard({ project, label }: { project: (typeof projects)[number]; label: string }) {
   const gallery = project.gallery ?? [];
-  const cardImages = project.thumbnail
-    ? gallery.slice(0, 1)
-    : gallery.slice(0, 2);
+  const cardImages = project.thumbnail ? gallery.slice(0, 1) : gallery.slice(0, 2);
 
   return (
     <article className="simple-card">
@@ -37,28 +124,18 @@ function ProjectCard({ project, label }: { project: (typeof projects)[number]; l
         <div className={"simple-card-media" + (project.thumbnail && cardImages.length > 0 ? " simple-card-media-pair" : "")}>
           {project.thumbnail && (
             <div className="simple-card-photo">
-              <Image
-                src={project.thumbnail}
-                alt={project.thumbnailAlt ?? ""}
-                fill
-                unoptimized={project.thumbnail.endsWith(".gif")}
-                sizes="(max-width: 760px) 100vw, 40vw"
-              />
+              <Image src={project.thumbnail} alt={project.thumbnailAlt ?? ""} fill unoptimized={project.thumbnail.endsWith(".gif")} sizes="(max-width: 760px) 100vw, 40vw" />
             </div>
           )}
           {cardImages.map((image) => (
             <div className="simple-card-photo" key={image.src}>
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                unoptimized={image.src.endsWith(".gif")}
-                sizes="(max-width: 760px) 100vw, 40vw"
-              />
+              <Image src={image.src} alt={image.alt} fill unoptimized={image.src.endsWith(".gif")} sizes="(max-width: 760px) 100vw, 40vw" />
             </div>
           ))}
         </div>
-      ) : null}
+      ) : (
+        <ProjectArt id={project.id} title={project.title} />
+      )}
       {project.videoUrl && gallery.length > 0 && (
         <div className="simple-card-media">
           {gallery.slice(0, 1).map((image) => (
@@ -82,14 +159,10 @@ function ProjectCard({ project, label }: { project: (typeof projects)[number]; l
       </div>
       <div className="simple-card-links">
         {project.demoUrl && (
-          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">
-            Demo <ArrowUpRight size={14} aria-hidden />
-          </a>
+          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">Demo <ArrowUpRight size={14} aria-hidden /></a>
         )}
         {project.githubUrl && (
-          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-            Source <ArrowUpRight size={14} aria-hidden />
-          </a>
+          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">Source <ArrowUpRight size={14} aria-hidden /></a>
         )}
       </div>
     </article>
