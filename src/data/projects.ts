@@ -124,6 +124,7 @@ export const projects: Project[] = [
     featured: true,
     thumbnail: "/images/projects/gesture-robot.gif",
     thumbnailAlt: "Robot controlled by hand gestures",
+    gallery: [{ src: "/images/projects/gesture-detection.png", alt: "Hand-landmark gesture recognition view" }],
     problem:
       "The first raw-image classifier confused left and right gestures.",
     approach:
@@ -216,6 +217,9 @@ export const projects: Project[] = [
       "Arduino-based autonomous robot builds: 1st place in Maze and 2nd place in Sumo at FEP.",
     category: "Robotics",
     tags: ["arduino", "cpp", "robotics"],
+    thumbnail: "/images/projects/maze-robot-1st.png",
+    thumbnailAlt: "First-place FEP maze robot",
+    gallery: [{ src: "/images/projects/sumo-robot-2nd.png", alt: "Second-place FEP sumo robot" }],
     problem:
       "Build autonomous robots that can navigate a maze and respond to an opponent in a timed arena.",
     approach:
