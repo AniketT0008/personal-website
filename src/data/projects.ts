@@ -77,6 +77,8 @@ export type Project = {
   featured?: boolean;
   thumbnail?: string;
   thumbnailAlt?: string;
+  videoUrl?: string;
+  videoPoster?: string;
   gallery?: { src: string; alt: string }[];
   problem: string;
   approach: string;
@@ -104,6 +106,8 @@ export const projects: Project[] = [
     featured: true,
     thumbnail: "/images/projects/projectforge-demo.gif",
     thumbnailAlt: "ProjectForge AI product demo",
+    videoUrl: "/videos/projectforge-demo.mp4",
+    videoPoster: "/images/projects/projectforge-dashboard.png",
     problem:
       "Turning raw project files and repositories into clear career materials is slow and inconsistent.",
     approach:
@@ -179,6 +183,8 @@ export const projects: Project[] = [
     featured: true,
     thumbnail: "/images/projects/aurora-ai-demo.gif",
     thumbnailAlt: "Aurora AI onboarding and decision-support demo",
+    videoUrl: "/videos/aurora-ai-demo.mp4",
+    videoPoster: "/images/projects/aurora-demo.jpg",
     problem:
       "Open-ended chat answers can be difficult to compare when a decision has several competing constraints.",
     approach:
@@ -218,6 +224,8 @@ export const projects: Project[] = [
     tags: ["arduino", "cpp", "robotics"],
     thumbnail: "/images/projects/maze-robot-1st.png",
     thumbnailAlt: "First-place FEP maze robot",
+    videoUrl: "/videos/maze-robot-demo.mp4",
+    videoPoster: "/images/projects/maze-robot-demo.jpg",
     gallery: [{ src: "/images/projects/sumo-robot-2nd.png", alt: "Second-place FEP sumo robot" }],
     problem:
       "Build autonomous robots that can navigate a maze and respond to an opponent in a timed arena.",
