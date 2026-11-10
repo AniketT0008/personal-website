@@ -7,7 +7,7 @@ export type ProjectCategory =
   | "Robotics"
   | "Computer Vision"
   | "Software"
-  | "Machine Learning";
+  | "Hackathons";
 
 export type TagCategory =
   | "Embedded"
@@ -90,7 +90,7 @@ export const projectCategories: ProjectCategory[] = [
   "Robotics",
   "Computer Vision",
   "Software",
-  "Machine Learning",
+  "Hackathons",
 ];
 
 export const projects: Project[] = [
@@ -99,7 +99,7 @@ export const projects: Project[] = [
     title: "ProjectForge AI",
     summary:
       "A live full-stack app that turns GitHub repositories and project files into résumé bullets, interview stories, technical docs, and other career-ready material.",
-    category: "Software",
+    category: "Hackathons",
     tags: ["nextjs", "typescript", "tailwind", "supabase", "gemini"],
     featured: true,
     thumbnail: "/images/projects/projectforge-demo.gif",
@@ -138,7 +138,7 @@ export const projects: Project[] = [
     title: "QueueMerger",
     summary:
       "Groups repeated office-hour questions into root-cause clusters so teaching assistants can resolve common blockers together.",
-    category: "Software",
+    category: "Hackathons",
     tags: ["python", "clustering"],
     featured: true,
     problem:
@@ -156,7 +156,7 @@ export const projects: Project[] = [
     title: "Synapse — Adaptive Study Engine",
     summary:
       "A study app with teacher-led lessons and adaptive review scheduling built around the SM-2 spaced-repetition algorithm.",
-    category: "Software",
+    category: "Hackathons",
     tags: ["javascript", "sm2", "learning"],
     featured: true,
     problem:
@@ -174,7 +174,7 @@ export const projects: Project[] = [
     title: "Aurora AI",
     summary:
       "A multi-agent decision-support prototype that compares user-provided context across career, productivity, and lifestyle questions.",
-    category: "Machine Learning",
+    category: "Hackathons",
     tags: ["python", "fastapi", "gemini", "opencv"],
     featured: true,
     thumbnail: "/images/projects/aurora-ai-demo.gif",
