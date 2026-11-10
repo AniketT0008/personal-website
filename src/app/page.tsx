@@ -21,6 +21,26 @@ const teamEntries = work.filter((entry) => entry.employmentType === "Design Team
 function ProjectCard({ project, label }: { project: (typeof projects)[number]; label: string }) {
   return (
     <article className="simple-card">
+      {(project.thumbnail || (project.gallery && project.gallery.length > 0)) && (
+        <div className={"simple-card-media" + (project.gallery && project.gallery.length > 0 ? " simple-card-media-pair" : "")}>
+          {project.thumbnail && (
+            <div className="simple-card-photo">
+              <Image
+                src={project.thumbnail}
+                alt={project.thumbnailAlt ?? ""}
+                fill
+                unoptimized={project.thumbnail.endsWith(".gif")}
+                sizes="(max-width: 760px) 100vw, 40vw"
+              />
+            </div>
+          )}
+          {project.gallery?.slice(0, 1).map((image) => (
+            <div className="simple-card-photo" key={image.src}>
+              <Image src={image.src} alt={image.alt} fill sizes="(max-width: 760px) 100vw, 40vw" />
+            </div>
+          ))}
+        </div>
+      )}
       <div className="simple-card-meta">
         <span>{label}</span>
         <span>{project.year}</span>
