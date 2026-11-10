@@ -93,3 +93,7 @@ body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-s
 .simple-card-media-pair { grid-template-columns: 1fr 1fr; }
 .simple-card-photo { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #e4e8e5; }
 .simple-card-photo img { object-fit: cover; }
+
+
+.simple-card-video { margin: -1.1rem -1.15rem .85rem; overflow: hidden; border-radius: 9px 9px 0 0; background: #111615; }
+.simple-card-video video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: contain; background: #111615; }
