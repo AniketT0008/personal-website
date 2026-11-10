@@ -3,6 +3,7 @@ import { Syne, JetBrains_Mono } from "next/font/google";
 import { siteConfig } from "@/data/site";
 import { AppShell } from "@/components/AppShell";
 import "./globals.css";
+import "./simple.css";
 
 const display = Syne({ subsets: ["latin"], variable: "--font-display", display: "swap" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
