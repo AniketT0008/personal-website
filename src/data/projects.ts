@@ -124,7 +124,6 @@ export const projects: Project[] = [
     featured: true,
     thumbnail: "/images/projects/gesture-robot.gif",
     thumbnailAlt: "Robot controlled by hand gestures",
-    gallery: [{ src: "/images/projects/gesture-detection.png", alt: "Hand-landmark gesture recognition view" }],
     problem:
       "The first raw-image classifier confused left and right gestures.",
     approach:
