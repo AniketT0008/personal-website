@@ -87,3 +87,9 @@ body { background: var(--bg); color: var(--fg); font-family: system-ui, -apple-s
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+
+.simple-card-media { display: grid; grid-template-columns: 1fr; gap: 4px; margin: -1.1rem -1.15rem .85rem; overflow: hidden; border-radius: 9px 9px 0 0; }
+.simple-card-media-pair { grid-template-columns: 1fr 1fr; }
+.simple-card-photo { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: #e4e8e5; }
+.simple-card-photo img { object-fit: cover; }
